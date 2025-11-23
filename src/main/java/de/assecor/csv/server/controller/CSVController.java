@@ -67,7 +67,7 @@ public class CSVController {
     }
 
     @GetMapping(
-        value = "/{id}",
+        value = "/person/{id}",
         produces = APPLICATION_JSON_VALUE
     )
     public ResponseEntity<PersonDTO> personById(

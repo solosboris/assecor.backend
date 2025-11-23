@@ -38,8 +38,7 @@ public class TestCSVController {
             testRestTemplate.getForEntity(
                 "http://localhost:"
                 .concat(Integer.toString(port))
-                .concat("/persons")
-                .concat("/5"),
+                .concat("/persons/person/5"),
                 PersonDTO.class
             );
         PersonDTO dto = response.getBody();
@@ -54,8 +53,7 @@ public class TestCSVController {
             testRestTemplate.getForEntity(
                 "http://localhost:"
                 .concat(Integer.toString(port))
-                .concat("/persons")
-                .concat("/color/blue"),
+                .concat("/persons/color/blue"),
                 DTOsContainer.class
             );
         DTOsContainer container = response.getBody();
@@ -90,7 +88,10 @@ public class TestCSVController {
         assertTrue(person.getId() > 0);
 
         ResponseEntity<DTOsContainer> response =
-            testRestTemplate.getForEntity(urlPrefix, DTOsContainer.class);
+            testRestTemplate.getForEntity(
+                urlPrefix,
+                DTOsContainer.class
+            );
         DTOsContainer container = response.getBody();
         assertTrue(container.getDtos().size() == 11);
 
