@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -46,7 +45,7 @@ public class CSVController {
                     new DTOsContainer(
                         persons.stream()
                             .map(PersonMapper.INSTANCE::model2Dto)
-                            .collect(Collectors.toUnmodifiableList())
+                            .toList()
                     )
                 );
     }
@@ -109,7 +108,7 @@ public class CSVController {
                     new DTOsContainer(
                         persons.stream()
                             .map(PersonMapper.INSTANCE::model2Dto)
-                            .collect(Collectors.toUnmodifiableList())
+                            .toList()
                     )
                 );
     }

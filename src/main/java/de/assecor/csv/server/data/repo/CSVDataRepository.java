@@ -51,12 +51,8 @@ public class CSVDataRepository {
                 );
             }
         } catch (Exception e) {
-            log.error("DataRepository {}", e, e.toString());
+            log.error("DataRepository", e);
         }
-    }
-
-    public List<Person> getPersons() {
-        return persons;
     }
 
     public Person getPersonById(int id) {
