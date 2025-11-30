@@ -79,13 +79,13 @@ public class TestCSVController {
                                 .concat(Integer.toString(port))
                                 .concat("/persons");
 
-        PersonDTO person = testRestTemplate.postForObject(
-                urlPrefix.concat("/person"),
+        Integer personId = testRestTemplate.postForObject(
+            urlPrefix.concat("/person"),
             new HttpEntity<>(jsonPerson.toString(), headers),
-            PersonDTO.class
+            Integer.class
         );
-        assertTrue(person != null);
-        assertTrue(person.getId() > 0);
+        assertTrue(personId != null);
+        assertTrue(personId.intValue() > 0);
 
         ResponseEntity<DTOsContainer> response =
             testRestTemplate.getForEntity(
@@ -96,8 +96,8 @@ public class TestCSVController {
         assertTrue(container.getDtos().size() == 11);
 
         response = testRestTemplate.getForEntity(
-                urlPrefix.concat("/color/white"),
-                DTOsContainer.class
+            urlPrefix.concat("/color/white"),
+            DTOsContainer.class
         );
         container = response.getBody();
         assertTrue(container.getDtos().size() == 3);

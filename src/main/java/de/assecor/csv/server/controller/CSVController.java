@@ -9,7 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,21 +55,19 @@ public class CSVController {
         value = "/person",
         produces = APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<PersonDTO> addPerson(
+    public ResponseEntity<Integer> addPerson(
         @RequestBody PersonDTO person
     ) {
         log.info("addPerson {}", person);
-        person.setId(
-            csvService.addPerson(
-                PersonMapper.INSTANCE.dto2Model(person)
-            )
+        int storedId = csvService.addPerson(
+            PersonMapper.INSTANCE.dto2Model(person)
         );
         log.info("addPerson answer {}", person);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Access-Control-Allow-Origin", "*")
-                .body(person);
+                .body(storedId);
     }
 
     @GetMapping(
