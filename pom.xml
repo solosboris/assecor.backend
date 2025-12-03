@@ -15,10 +15,23 @@
 	<description>Demo project for REST by Spring Boot of Assecor CSV data</description>
 
 	<properties>
-		<java.version>24</java.version>
+		<java.version>21</java.version>
 		<lombok.version>1.18.42</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>github</id>
+			<name>GitHub Packages SNAPSHOTS</name>
+			<url>https://maven.pkg.github.com/solosboris/assecor.backend</url>
+		</snapshotRepository>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages RELEASES</name>
+			<url>https://maven.pkg.github.com/solosboris/assecor.backend</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>

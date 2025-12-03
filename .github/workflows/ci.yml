@@ -1,0 +1,53 @@
+name: Java CI/CD Build & Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 and Maven auth
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          server-id: github                     # Must match <id> in pom.xml distributionManagement
+          server-username: ${{ github.actor }}  # Dynamic GitHub username
+          server-password: ${{ secrets.MY_GITHUB_TOKEN }}  # Your PAT stored as a secret
+
+      - name: Configure Maven settings
+        run: |
+          mkdir -p $HOME/.m2
+          cat > $HOME/.m2/settings.xml <<EOF
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd"> 
+          <servers> 
+          <server> 
+          <id>github</id> 
+          <username>${{ github.actor }}</username> 
+          <password>${{ secrets.MY_GITHUB_TOKEN }}</password> 
+          </server> 
+          </servers> 
+          </settings> 
+          EOF
+
+      - name: Build package
+        run: mvn -B clean package --settings $HOME/.m2/settings.xml
+
+      - name: Deploy to GitHub Packages
+        run: mvn -B deploy --settings $HOME/.m2/settings.xml
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: csvapp-jar
+          path: target/*.jar
