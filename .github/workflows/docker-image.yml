@@ -1,0 +1,30 @@
+name: assecor.csv
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build JAR
+        run: mvn -B clean package
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG=my-image:${GITHUB_SHA::7}   # Use first 7 chars of commit SHA
+          docker build . --file Dockerfile --tag $IMAGE_TAG
+          echo "Built Docker image: $IMAGE_TAG"
