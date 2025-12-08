@@ -27,6 +27,10 @@ public class CSVService {
         return dataRepository.getPersonsByColor(color);
     }
 
+    public int getPersonsByColorCounter(String color) {
+        return dataRepository.getPersonsByColor(color).size();
+    }
+
     public int addPerson(Person p) {
         return dataRepository.addPerson(p);
     }

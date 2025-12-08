@@ -103,4 +103,28 @@ public class TestCSVController {
         assertTrue(container.getDtos().size() == 3);
     }
 
+    @Test
+    public void testPersonByColorCnt() {
+        String urlPrefix = "http://localhost:"
+                .concat(Integer.toString(port))
+                .concat("/persons");
+        log.info("testPersonByColorCnt url stem {}", urlPrefix);
+
+        ResponseEntity<Integer> response =
+            testRestTemplate.getForEntity(
+                urlPrefix.concat("/colorcounter/purple"),
+                Integer.class
+            );
+        int purpleCnt = response.getBody().intValue();
+
+        response = testRestTemplate.getForEntity(
+            urlPrefix.concat("/colorcounter/turquoise"),
+            Integer.class
+        );
+        int turquoiseCnt = response.getBody().intValue();
+
+        assertTrue(purpleCnt == 1);
+        assertTrue(purpleCnt == turquoiseCnt);
+    }
+
 }

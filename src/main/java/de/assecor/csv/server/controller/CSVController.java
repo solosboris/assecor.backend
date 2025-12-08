@@ -113,4 +113,24 @@ public class CSVController {
                 );
     }
 
+    @GetMapping(
+        value = "/colorcounter/{color}",
+        produces = APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Integer> personsByColorCounter(
+        @PathVariable String color
+    ) {
+        log.info("personsByColor color {}", color);
+        int personsCounter =
+                csvService.getPersonsByColorCounter(color);
+        log.info("personsByColor color {}, cnt {}",
+                color, personsCounter
+        );
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Access-Control-Allow-Origin", "*")
+                .body(personsCounter);
+    }
+
 }
