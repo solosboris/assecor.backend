@@ -51,11 +51,11 @@ public class CSVDataRepository {
                 );
             }
         } catch (Exception e) {
-            log.error("DataRepository", e);
-            throw new IllegalArgumentException(
-                getClass().getName().concat(" input parsing error"),
-                e
-            );
+            String msg = getClass()
+                    .getName()
+                    .concat(" constructor: input parsing error");
+            log.error(msg, e);
+            throw new IllegalArgumentException(msg, e);
         }
     }
 
