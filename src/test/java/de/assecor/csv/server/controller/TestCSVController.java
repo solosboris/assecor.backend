@@ -136,6 +136,33 @@ public class TestCSVController {
     }
 
     @Test
+    public void testFalseColor() throws Exception {
+        log.info("testFalseColor");
+
+        JSONObject jsonPerson = new JSONObject();
+        jsonPerson.put("id", "0");
+        jsonPerson.put("name", "A1");
+        jsonPerson.put("lastName", "B2");
+        jsonPerson.put("zip", "12345");
+        jsonPerson.put("city", "C3");
+        jsonPerson.put("color", "testFalseColor");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String urlPrefix = "http://localhost:"
+            .concat(Integer.toString(port))
+            .concat("/persons");
+
+        Object failed = testRestTemplate.postForObject(
+            urlPrefix.concat("/person"),
+            new HttpEntity<>(jsonPerson.toString(), headers),
+            Object.class
+        );
+        assertTrue(failed == null);
+    }
+
+    @Test
     public void testPersonByColorCnt() {
         String urlPrefix = "http://localhost:"
                 .concat(Integer.toString(port))

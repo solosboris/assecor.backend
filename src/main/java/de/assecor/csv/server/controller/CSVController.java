@@ -7,6 +7,7 @@ import de.assecor.csv.server.data.model.Person;
 import de.assecor.csv.server.service.CSVService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -58,15 +59,24 @@ public class CSVController {
         @RequestBody PersonDTO person
     ) {
         log.info("addPerson {}", person);
-        int storedId = csvService.addPerson(
-            PersonMapper.INSTANCE.dto2Model(person)
-        );
-        log.info("addPerson answer {}", person);
+        Person model = null;
+        try {
+            model = PersonMapper.INSTANCE.dto2Model(person);
+        } catch (Exception e) {
+            log.error("addPerson conversion error {}", person, e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .build();
+        }
+        int storedId = csvService.addPerson(model);
+        log.info("addPerson new personId {}", storedId);
         return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
-                .body(storedId);
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .body(storedId);
     }
 
     @GetMapping(
