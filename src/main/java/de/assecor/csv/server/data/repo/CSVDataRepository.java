@@ -52,6 +52,10 @@ public class CSVDataRepository {
             }
         } catch (Exception e) {
             log.error("DataRepository", e);
+            throw new IllegalArgumentException(
+                getClass().getName().concat(" input parsing error"),
+                e
+            );
         }
     }
 
