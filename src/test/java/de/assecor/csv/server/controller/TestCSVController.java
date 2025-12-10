@@ -78,6 +78,21 @@ public class TestCSVController {
     }
 
     @Test
+    public void testPersonsByNotAColor() {
+        log.info("testPersonsByNotAColor");
+
+        ResponseEntity<DTOsContainer> response =
+                testRestTemplate.getForEntity(
+                        "http://localhost:"
+                                .concat(Integer.toString(port))
+                                .concat("/persons/color/rururu"),
+                        DTOsContainer.class
+                );
+        DTOsContainer container = response.getBody();
+        assertTrue(container.getDtos().isEmpty());
+    }
+
+    @Test
     public void testAddPerson() throws Exception {
         log.info("testAddPerson");
 
