@@ -13,6 +13,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -43,6 +44,22 @@ public class TestCSVController {
             );
         PersonDTO dto = response.getBody();
         assertTrue(dto.getId() == 5);
+    }
+
+    @Test
+    public void testPersonByIdNegative() {
+        log.info("testPersonByIdNegative");
+
+        ResponseEntity<PersonDTO> response =
+                testRestTemplate.getForEntity(
+                        "http://localhost:"
+                                .concat(Integer.toString(port))
+                                .concat("/persons/person/0"),
+                        PersonDTO.class
+                );
+        assertTrue(
+            response.getStatusCode() == HttpStatusCode.valueOf(404)
+        );
     }
 
     @Test

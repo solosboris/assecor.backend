@@ -80,15 +80,22 @@ public class CSVController {
         Person person = csvService.getPersonById(
             Integer.parseInt(id)
         );
-        log.info("personsById person {}", person);
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
-                .body(
-                    PersonMapper.INSTANCE.model2Dto(person)
-                );
-    }
+        log.info("personsById person {}",
+            (person != null ? person : "null")
+        );
+        return person != null ?
+                ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .body(
+                        PersonMapper.INSTANCE.model2Dto(person)
+                    ) :
+                ResponseEntity
+                    .notFound()
+                    .header("Access-Control-Allow-Origin", "*")
+                    .build();
+        }
 
     @GetMapping(
             value = "/color/{color}",
