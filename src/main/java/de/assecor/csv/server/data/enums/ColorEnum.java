@@ -1,5 +1,11 @@
 package de.assecor.csv.server.data.enums;
 
+import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+@Getter
 public enum ColorEnum {
 
     BLUE(1,"blue"),
@@ -10,20 +16,12 @@ public enum ColorEnum {
     TURQUOISE(6, "turquoise"),
     WHITE(7, "white");
 
-    private int id;
-    private String color;
+    private final int id;
+    private final String color;
 
     ColorEnum(int id, String color) {
         this.id = id;
         this.color = color;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public String toString() {
@@ -33,23 +31,22 @@ public enum ColorEnum {
     }
 
     public static ColorEnum getByColor(String color) {
-        if (color == null || color.length() == 0) {
-            return ColorEnum.WHITE;
+        if (color == null || color.trim().isEmpty()) {
+            throw new IllegalArgumentException("empty color value");
         }
-        ColorEnum [] enums = ColorEnum.values();
-        for (int i = 0; i < enums.length; i++) {
-            if (enums[i]
-                    .getColor()
-                    .toLowerCase()
-                    .equals(
-                        color.toLowerCase().trim()
-                    )
-            ) {
-                return enums[i];
-            }
+        String trimmedColor = color.trim();
+        Optional<ColorEnum> optEnum =
+            Arrays.stream(ColorEnum.values())
+                .filter(
+                    c -> c.getColor().equalsIgnoreCase(trimmedColor)
+                ).findAny();
+        if (optEnum.isPresent()) {
+            return optEnum.get();
         }
         throw new IllegalArgumentException(
-                "false color ".concat(color)
+            ColorEnum.class.getName()
+                .concat("#getByColor false color ")
+                .concat(color)
         );
     }
 
