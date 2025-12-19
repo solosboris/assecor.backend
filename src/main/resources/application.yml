@@ -10,3 +10,5 @@ tomcat:
   port: 8080
 data:
   file: data.csv
+application:
+  cors: http://localhost:5173

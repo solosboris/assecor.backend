@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(path = "/persons")
-@CrossOrigin(origins="*")
 @RequiredArgsConstructor
 @Slf4j
 public class CSVController {
@@ -40,8 +38,6 @@ public class CSVController {
         log.info("allPersons size {}", persons.size());
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
                 .body(
                     new DTOsContainer(
                         persons.stream()
@@ -66,8 +62,6 @@ public class CSVController {
             log.error("addPerson conversion error {}", person, e);
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .header("Access-Control-Allow-Origin", "*")
                     .build();
         }
         int storedId = csvService.addPerson(model);
@@ -96,14 +90,11 @@ public class CSVController {
         return person != null ?
                 ResponseEntity
                     .ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .header("Access-Control-Allow-Origin", "*")
                     .body(
                         PersonMapper.INSTANCE.model2Dto(person)
                     ) :
                 ResponseEntity
                     .notFound()
-                    .header("Access-Control-Allow-Origin", "*")
                     .build();
         }
 
@@ -119,8 +110,6 @@ public class CSVController {
         log.info("personsByColor size {}", persons.size());
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
                 .body(
                     new DTOsContainer(
                         persons.stream()
@@ -145,8 +134,6 @@ public class CSVController {
         );
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")
                 .body(personsCounter);
     }
 
