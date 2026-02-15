@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
 	info = @Info(
-		title = "Assecor CSV example",
+		title = "Persons CSV example",
 		version = "1.0",
 		description = "API documentation"
 	)
